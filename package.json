@@ -1,0 +1,21 @@
+{
+  "name": "immigration-poc-frontend",
+  "version": "1.0.0",
+  "description": "AI-Powered Immigration Document Analysis Frontend",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 3000",
+    "build": "echo 'Static site - no build needed'",
+    "start": "python -m http.server 3000"
+  },
+  "keywords": [
+    "immigration",
+    "ai",
+    "document-analysis",
+    "legal-tech"
+  ],
+  "author": "Immigration POC Team",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}

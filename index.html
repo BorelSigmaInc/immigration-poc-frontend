@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immigration POC - Document Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">Immigration POC</span>
+                    </div>
+                    <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                        AI-Powered Analysis
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Hero Section -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                    AI-Powered Immigration Document Analysis
+                </h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Upload your immigration documents and get instant AI analysis with key issues, deadlines, and legal citations.
+                </p>
+            </div>
+
+            <!-- Main Form Section -->
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Upload Document for Analysis</h2>
+                
+                <form id="uploadForm" class="space-y-6">
+                    <!-- Document Type -->
+                    <div>
+                        <label for="documentType" class="block text-sm font-medium text-gray-700 mb-2">
+                            Document Type *
+                        </label>
+                        <select id="documentType" name="documentType" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Select document type...</option>
+                            <option value="rfe">Request for Evidence (RFE)</option>
+                            <option value="noid">Notice of Intent to Deny (NOID)</option>
+                            <option value="legal_brief">Legal Brief</option>
+                            <option value="petition">Immigration Petition</option>
+                            <option value="appeal">Appeal Document</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div>
+                        <label for="fileUpload" class="block text-sm font-medium text-gray-700 mb-2">
+                            Upload Document *
+                        </label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+                            <input type="file" id="fileUpload" name="file" accept=".pdf,.doc,.docx,.txt" required class="hidden">
+                            <div id="fileUploadArea" class="cursor-pointer">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <p class="mt-2 text-sm text-gray-600">
+                                    <span class="font-medium text-blue-600 hover:text-blue-500">Click to upload</span> or drag and drop
+                                </p>
+                                <p class="text-xs text-gray-500">PDF, DOC, DOCX, or TXT files (Max 10MB)</p>
+                            </div>
+                            <div id="fileInfo" class="hidden mt-2">
+                                <p class="text-sm text-green-600 font-medium" id="fileName"></p>
+                                <p class="text-xs text-gray-500" id="fileSize"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Document Content (Alternative) -->
+                    <div>
+                        <label for="documentContent" class="block text-sm font-medium text-gray-700 mb-2">
+                            Or paste document content directly
+                        </label>
+                        <textarea 
+                            id="documentContent" 
+                            name="documentContent" 
+                            rows="6" 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Paste your immigration document content here..."
+                        ></textarea>
+                    </div>
+
+                    <!-- Analysis Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="useCloudApis" name="useCloudApis" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="useCloudApis" class="ml-2 block text-sm text-gray-700">
+                                Use Cloud APIs for enhanced analysis
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="includeLegalCitations" name="includeLegalCitations" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="includeLegalCitations" class="ml-2 block text-sm text-gray-700">
+                                Include legal citations
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-medium text-lg transition-colors">
+                            Analyze Document
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="hidden bg-white rounded-lg shadow-lg p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900">Analysis Results</h3>
+                    <div class="flex space-x-2">
+                        <button onclick="downloadReport()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
+                            Download Report
+                        </button>
+                        <button onclick="shareResults()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
+                            Share Results
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="resultsContent" class="space-y-6">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">AI-Powered Analysis</h3>
+                    <p class="text-gray-600">Advanced AI algorithms analyze your documents for key issues, deadlines, and legal requirements.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Deadline Tracking</h3>
+                    <p class="text-gray-600">Automatically identify and highlight important deadlines and response requirements.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Legal Citations</h3>
+                    <p class="text-gray-600">Get relevant legal citations and regulatory references for your immigration case.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-gray-400">© 2024 Immigration POC. AI-Powered Document Analysis Platform.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // File upload handling
+        const fileUpload = document.getElementById('fileUpload');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+
+        fileUploadArea.addEventListener('click', () => fileUpload.click());
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('border-blue-400', 'bg-blue-50');
+        });
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('border-blue-400', 'bg-blue-50');
+        });
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('border-blue-400', 'bg-blue-50');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileUpload.files = files;
+                updateFileInfo(files[0]);
+            }
+        });
+
+        fileUpload.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                updateFileInfo(e.target.files[0]);
+            }
+        });
+
+        function updateFileInfo(file) {
+            fileName.textContent = file.name;
+            fileSize.textContent = `${(file.size / 1024 / 1024).toFixed(2)} MB`;
+            fileInfo.classList.remove('hidden');
+        }
+
+        // Form submission
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            
+            // Show loading state
+            submitBtn.textContent = 'Analyzing...';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75');
+
+            try {
+                let response;
+                
+                // Check if file is uploaded or content is pasted
+                if (formData.get('file').size > 0) {
+                    // File upload
+                    response = await fetch('https://your-backend-url.herokuapp.com/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                } else if (formData.get('documentContent').trim()) {
+                    // Text content upload
+                    const content = formData.get('documentContent');
+                    const documentType = formData.get('documentType');
+                    const useCloudApis = formData.get('useCloudApis') === 'on';
+                    
+                    // Create a mock file for text content
+                    const blob = new Blob([content], { type: 'text/plain' });
+                    const file = new File([blob], `document_${documentType}.txt`, { type: 'text/plain' });
+                    
+                    const uploadData = new FormData();
+                    uploadData.append('file', file);
+                    uploadData.append('document_type', documentType);
+                    uploadData.append('use_cloud_apis', useCloudApis);
+                    
+                    response = await fetch('https://your-backend-url.herokuapp.com/upload', {
+                        method: 'POST',
+                        body: uploadData
+                    });
+                } else {
+                    throw new Error('Please upload a file or paste document content.');
+                }
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Simulate analysis results for demo
+                    const mockAnalysis = {
+                        id: result.analysis_id || Date.now(),
+                        document_name: formData.get('file').name || 'Document Analysis',
+                        document_type: formData.get('documentType'),
+                        summary: "This document has been successfully analyzed using AI-powered immigration case analysis. Key issues have been identified and recommendations provided.",
+                        key_issues: [
+                            "Missing financial documentation",
+                            "Incomplete relationship evidence", 
+                            "Insufficient supporting documents",
+                            "Response deadline approaching"
+                        ],
+                        deadlines: "Response required within 87 days from the date of notice to avoid potential denial.",
+                        legal_citations: [
+                            "8 CFR 103.2(b)(8) - Evidence requirements for immigration petitions",
+                            "8 CFR 204.2(a)(1)(ii) - Evidence of bona fide marriage",
+                            "INA Section 204 - Immediate relative petitions"
+                        ],
+                        confidence_score: 87.5,
+                        status: "completed",
+                        recommendations: [
+                            "Gather all required financial documents",
+                            "Collect relationship evidence spanning the entire relationship",
+                            "Obtain certified translations of foreign documents",
+                            "Prepare comprehensive response package"
+                        ]
+                    };
+
+                    displayResults(mockAnalysis);
+                } else {
+                    throw new Error(result.message || 'Analysis failed');
+                }
+
+            } catch (error) {
+                alert('Error: ' + error.message);
+                console.error('Upload error:', error);
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75');
+            }
+        });
+
+        function displayResults(analysis) {
+            const resultsSection = document.getElementById('resultsSection');
+            const resultsContent = document.getElementById('resultsContent');
+
+            resultsContent.innerHTML = `
+                <div class="border-l-4 border-green-500 pl-4 mb-6">
+                    <h4 class="text-lg font-semibold text-green-800">Analysis Complete</h4>
+                    <p class="text-green-700">Document: ${analysis.document_name}</p>
+                    <p class="text-green-700">Type: ${analysis.document_type.toUpperCase()}</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-900 mb-2">Summary</h4>
+                            <p class="text-blue-800 text-sm">${analysis.summary}</p>
+                        </div>
+                        
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-900 mb-2">Key Issues</h4>
+                            <ul class="text-red-800 text-sm space-y-1">
+                                ${analysis.key_issues.map(issue => `<li>• ${issue}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-yellow-900 mb-2">Deadlines</h4>
+                            <p class="text-yellow-800 text-sm">${analysis.deadlines}</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-900 mb-2">Legal Citations</h4>
+                            <ul class="text-purple-800 text-sm space-y-1">
+                                ${analysis.legal_citations.map(citation => `<li>• ${citation}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-900 mb-2">Recommendations</h4>
+                            <ul class="text-green-800 text-sm space-y-1">
+                                ${analysis.recommendations.map(rec => `<li>• ${rec}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-gray-900">Confidence Score</h4>
+                                <span class="text-lg font-bold text-gray-900">${analysis.confidence_score}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-green-500 h-3 rounded-full transition-all duration-1000" style="width: ${analysis.confidence_score}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function downloadReport() {
+            // Create a simple text report
+            const report = `Immigration Document Analysis Report
+Generated: ${new Date().toLocaleDateString()}
+
+Document: ${document.getElementById('documentType').value}
+Analysis Status: Completed
+Confidence Score: 87.5%
+
+SUMMARY:
+This document has been successfully analyzed using AI-powered immigration case analysis.
+
+KEY ISSUES:
+• Missing financial documentation
+• Incomplete relationship evidence
+• Insufficient supporting documents
+• Response deadline approaching
+
+DEADLINES:
+Response required within 87 days from the date of notice.
+
+LEGAL CITATIONS:
+• 8 CFR 103.2(b)(8) - Evidence requirements for immigration petitions
+• 8 CFR 204.2(a)(1)(ii) - Evidence of bona fide marriage
+• INA Section 204 - Immediate relative petitions
+
+RECOMMENDATIONS:
+• Gather all required financial documents
+• Collect relationship evidence spanning the entire relationship
+• Obtain certified translations of foreign documents
+• Prepare comprehensive response package`;
+
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'immigration_analysis_report.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function shareResults() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Immigration Document Analysis',
+                    text: 'Check out my immigration document analysis results!',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                const resultsText = document.getElementById('resultsContent').innerText;
+                navigator.clipboard.writeText(resultsText).then(() => {
+                    alert('Results copied to clipboard!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
